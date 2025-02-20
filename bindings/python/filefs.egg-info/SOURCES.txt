@@ -1,0 +1,10 @@
+FileFS.c
+LICENSE
+README.md
+setup.py
+bindings/python/filefs/__init__.py
+bindings/python/filefs/binding.c
+bindings/python/filefs.egg-info/PKG-INFO
+bindings/python/filefs.egg-info/SOURCES.txt
+bindings/python/filefs.egg-info/dependency_links.txt
+bindings/python/filefs.egg-info/top_level.txt
