@@ -9,6 +9,7 @@ FileFS: Implement a virtual file system within a single file.
 ├── c/          # C implementation (original)
 ├── cpp/        # Pure C++20 port
 ├── go/         # Pure-Go port
+├── java/       # Pure Java 21 port
 ├── python/     # Python package (CPython bindings to c/)
 ├── rust/       # Pure-Rust port
 ├── zig/        # Pure-Zig port
@@ -46,6 +47,14 @@ go build -o demo ./cmd/demo
 
 See [go/README.md](go/README.md).
 
+## Java
+
+```bash
+mvn -f java/pom.xml test
+```
+
+See [java/README.md](java/README.md).
+
 ## Python
 
 ```bash
@@ -76,4 +85,4 @@ zig build test
 
 See [zig/README.md](zig/README.md).
 
-C / C++ / Go / Python / Rust / Zig share the same on-disk format (512-byte blocks, magic `78 11 45 14`).
+C / C++ / Go / Java / Python / Rust / Zig share the same on-disk format (512-byte blocks, magic `78 11 45 14`).

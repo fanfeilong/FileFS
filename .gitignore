@@ -2,6 +2,7 @@
 c/demo
 cpp/build/
 go/demo
+java/target/
 rust/target/
 zig/zig-out/
 zig/.zig-cache/
