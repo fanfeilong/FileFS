@@ -7,6 +7,7 @@ FileFS: Implement a virtual file system within a single file.
 ```
 .
 ├── c/          # C implementation (original)
+├── cpp/        # Pure C++20 port
 ├── go/         # Pure-Go port
 ├── python/     # Python package (CPython bindings to c/)
 ├── zig/        # Pure-Zig port
@@ -23,6 +24,16 @@ make
 ```
 
 See [c/README.md](c/README.md).
+
+## C++
+
+```bash
+cmake -S cpp -B cpp/build -DCMAKE_BUILD_TYPE=Release
+cmake --build cpp/build -j
+ctest --test-dir cpp/build --output-on-failure
+```
+
+See [cpp/README.md](cpp/README.md).
 
 ## Go
 
@@ -55,4 +66,4 @@ zig build test
 
 See [zig/README.md](zig/README.md).
 
-C / Go / Python / Zig share the same on-disk format (512-byte blocks, magic `78 11 45 14`).
+C / C++ / Go / Python / Zig share the same on-disk format (512-byte blocks, magic `78 11 45 14`).
