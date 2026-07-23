@@ -10,6 +10,7 @@ FileFS: Implement a virtual file system within a single file.
 ├── cpp/        # Pure C++20 port
 ├── go/         # Pure-Go port
 ├── python/     # Python package (CPython bindings to c/)
+├── rust/       # Pure-Rust port
 ├── zig/        # Pure-Zig port
 ├── LICENSE
 └── README.md
@@ -57,6 +58,15 @@ python -m unittest discover -s tests -v
 
 See [python/README.md](python/README.md).
 
+## Rust
+
+```bash
+cd rust
+cargo test
+```
+
+See [rust/README.md](rust/README.md).
+
 ## Zig
 
 ```bash
@@ -66,4 +76,4 @@ zig build test
 
 See [zig/README.md](zig/README.md).
 
-C / C++ / Go / Python / Zig share the same on-disk format (512-byte blocks, magic `78 11 45 14`).
+C / C++ / Go / Python / Rust / Zig share the same on-disk format (512-byte blocks, magic `78 11 45 14`).
