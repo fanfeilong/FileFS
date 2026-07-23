@@ -1,0 +1,9 @@
+[package]
+name = "filefs"
+version = "0.1.0"
+edition = "2021"
+description = "Idiomatic Rust port of FileFS — a virtual filesystem in a single file"
+license = "MIT"
+readme = "README.md"
+
+[dependencies]
