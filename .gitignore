@@ -1,6 +1,8 @@
 # Build artifacts
 c/demo
 go/demo
+zig/zig-out/
+zig/.zig-cache/
 *.ffs
 *-j
 
