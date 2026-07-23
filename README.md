@@ -105,4 +105,4 @@ zig build test
 
 See [zig/README.md](zig/README.md).
 
-C / C++ / .NET / Go / Java / Python / Rust / Zig share the same on-disk format (512-byte blocks, magic `78 11 45 14`).
+C / C++ / .NET / Go / Java / Node.js / Python / Rust / Zig share the same on-disk format (512-byte blocks, magic `78 11 45 14`).
