@@ -1,6 +1,6 @@
 # FileFS (Go)
 
-Pure-Go port of [FileFS](../README.md): a virtual filesystem stored in a single file.
+Pure-Go port of FileFS (see [c/](../c/) for the original C implementation): a virtual filesystem stored in a single file.
 
 ## Layout
 
