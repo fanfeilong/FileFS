@@ -1,4 +1,5 @@
-# Go
+# Build artifacts
+c/demo
 go/demo
 *.ffs
 *-j
