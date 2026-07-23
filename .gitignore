@@ -1,5 +1,6 @@
 # Build artifacts
 c/demo
+cpp/build/
 go/demo
 zig/zig-out/
 zig/.zig-cache/
