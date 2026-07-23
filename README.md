@@ -9,6 +9,7 @@ FileFS: Implement a virtual file system within a single file.
 ├── c/          # C implementation (original)
 ├── go/         # Pure-Go port
 ├── python/     # Python package (CPython bindings to c/)
+├── zig/        # Pure-Zig port
 ├── LICENSE
 └── README.md
 ```
@@ -45,4 +46,13 @@ python -m unittest discover -s tests -v
 
 See [python/README.md](python/README.md).
 
-C / Go / Python share the same on-disk format (512-byte blocks, magic `78 11 45 14`).
+## Zig
+
+```bash
+cd zig
+zig build test
+```
+
+See [zig/README.md](zig/README.md).
+
+C / Go / Python / Zig share the same on-disk format (512-byte blocks, magic `78 11 45 14`).
