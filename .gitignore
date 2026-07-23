@@ -4,6 +4,16 @@ go/demo
 *.ffs
 *-j
 
+# Python
+python/.venv/
+python/**/__pycache__/
+python/**/*.egg-info/
+python/*.egg-info/
+python/build/
+python/dist/
+python/filefs/*.so
+python/filefs/*.pyd
+
 # Prerequisites
 *.d
 
