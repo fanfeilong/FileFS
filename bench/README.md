@@ -6,7 +6,7 @@ color heatmap matrix into the root `README.md`.
 ## Quick start
 
 ```bash
-# From repo root — runs every available toolchain, skips the rest
+# From repo root — runs every language runner
 python3 bench/run_all.py
 
 # Only selected languages
@@ -30,15 +30,21 @@ row** (green = faster ports for that API, red = slower).
 
 ## Implemented runners
 
-Currently measured end-to-end:
+All 14 language ports are wired:
 
-- `c`, `go`, `lua`, `nodejs`, `python`, `rust`
+`c`, `cpp`, `dotnet`, `go`, `java`, `kotlin`, `lua`, `moonbit`, `nodejs`,
+`python`, `rust`, `swift`, `wasm`, `zig`
 
-Pending hooks (registered, raise until filled in): `cpp`, `dotnet`, `java`,
-`kotlin`, `moonbit`, `swift`, `wasm`, `zig`.
+Notes:
 
-Default `python3 bench/run_all.py` runs the implemented set. Pass `--all` to
-attempt every registered language.
+- **Swift** bench executable lives in `swift/Sources/FileFsBench` (SwiftPM
+  cannot depend on sources outside a package root).
+- **MoonBit** runs on the JS target (`moon run --target js`) for high-resolution
+  `performance.now` timing.
+- **Wasm** is an in-memory port: some ops (`mount_umount`, `seek_tell_rewind`)
+  use the closest available API equivalents.
+
+## Adding / extending a runner
 
 1. Emit a single JSON object on stdout:
 
