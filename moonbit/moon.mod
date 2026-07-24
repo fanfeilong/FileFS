@@ -17,3 +17,7 @@ description = "MoonBit port of FileFS (virtual filesystem in a single file)"
 import {
   "moonbitlang/x@0.4.47",
 }
+
+options(
+  exclude: [ "cmd/bench" ],
+)
