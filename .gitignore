@@ -4,6 +4,9 @@ cpp/build/
 go/demo
 java/target/
 kotlin/build/
+moonbit/_build/
+moonbit/target/
+moonbit/.mooncakes/
 nodejs/node_modules/
 rust/target/
 swift/.build/
@@ -73,6 +76,7 @@ python/filefs/*.pyd
 
 # Kernel Module Compile Results
 *.mod*
+!**/moon.mod
 *.cmd
 .tmp_versions/
 modules.order

@@ -1,0 +1,7 @@
+import {
+  "moonbitlang/x/fs",
+  "moonbitlang/core/buffer",
+  "moonbitlang/core/bytes",
+  "moonbitlang/core/cmp",
+  "moonbitlang/core/test",
+}

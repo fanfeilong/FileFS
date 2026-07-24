@@ -12,6 +12,7 @@ FileFS: Implement a virtual file system within a single file.
 ├── go/         # Pure-Go port
 ├── java/       # Pure Java 21 port
 ├── kotlin/     # Pure Kotlin/JVM port
+├── moonbit/    # Pure MoonBit port
 ├── nodejs/     # Pure JavaScript ESM port
 ├── python/     # Python package (CPython bindings to c/)
 ├── rust/       # Pure-Rust port
@@ -77,6 +78,15 @@ cd kotlin
 ```
 
 See [kotlin/README.md](kotlin/README.md).
+
+## MoonBit
+
+```bash
+cd moonbit
+moon test
+```
+
+See [moonbit/README.md](moonbit/README.md).
 
 ## Node.js
 
