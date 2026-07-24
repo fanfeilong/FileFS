@@ -6,6 +6,9 @@ from __future__ import annotations
 import html
 import json
 import math
+import shutil
+import subprocess
+import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -13,6 +16,7 @@ BENCH = Path(__file__).resolve().parent
 RESULTS = BENCH / "results" / "latest.json"
 README = ROOT / "README.md"
 SVG_PATH = BENCH / "matrix.svg"
+PNG_PATH = BENCH / "matrix.png"
 WORKLOAD = json.loads((BENCH / "workload.json").read_text(encoding="utf-8"))
 
 BEGIN = "<!-- BENCH_MATRIX_BEGIN -->"
@@ -133,7 +137,7 @@ def render_html(doc: dict) -> str:
                 f"<code>{html.escape(cell)}</code></td>"
             )
         lines.append("</tr>")
-        lines.append("</tbody></table>")
+    lines.append("</tbody></table>")
     return "\n".join(lines) + "\n"
 
 
@@ -221,16 +225,161 @@ def patch_readme(section: str) -> None:
     README.write_text(text, encoding="utf-8")
 
 
+def write_png(doc: dict) -> bool:
+    """Rasterize the heatmap PNG (Pillow preferred; Chrome headless fallback)."""
+    try:
+        from PIL import Image, ImageDraw, ImageFont  # type: ignore
+    except ImportError:
+        return write_png_via_chrome(render_svg(doc), PNG_PATH)
+
+    lang_order, op_ids, values, op_labels = build_matrix(doc)
+    if not lang_order:
+        return False
+
+    def hex_to_rgb(color: str) -> tuple[int, int, int]:
+        color = color.lstrip("#")
+        return tuple(int(color[i : i + 2], 16) for i in (0, 2, 4))  # type: ignore[return-value]
+
+    label_w = 150
+    col_w = 78
+    row_h = 28
+    header_h = 36
+    width = label_w + col_w * len(lang_order) + 16
+    height = header_h + row_h * len(op_ids) + 48
+
+    img = Image.new("RGB", (width, height), (17, 24, 39))
+    draw = ImageDraw.Draw(img)
+    font_path = Path("/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf")
+    if font_path.exists():
+        font = ImageFont.truetype(str(font_path), 11)
+        font_title = ImageFont.truetype(str(font_path), 13)
+        font_small = ImageFont.truetype(str(font_path), 9)
+    else:
+        font = font_title = font_small = ImageFont.load_default()
+
+    draw.text(
+        (12, 6),
+        "FileFS full-API benchmark matrix (lower is better)",
+        fill=(229, 231, 235),
+        font=font_title,
+    )
+    y0 = 32
+    draw.rectangle([0, y0, width, y0 + header_h], fill=hex_to_rgb(HEADER_BG))
+    draw.text((8, y0 + 10), "API", fill=hex_to_rgb(HEADER_FG), font=font)
+    for i, lang in enumerate(lang_order):
+        draw.text(
+            (label_w + i * col_w + 8, y0 + 10),
+            lang,
+            fill=hex_to_rgb(HEADER_FG),
+            font=font,
+        )
+
+    for r, op in enumerate(op_ids):
+        y = y0 + header_h + r * row_h
+        colors = row_colors(values[op])
+        draw.rectangle([0, y, label_w, y + row_h], fill=(31, 41, 55))
+        draw.text((8, y + 8), op_labels[op], fill=(229, 231, 235), font=font)
+        for i, lang in enumerate(lang_order):
+            x = label_w + i * col_w
+            draw.rectangle(
+                [x, y, x + col_w, y + row_h],
+                fill=hex_to_rgb(colors[lang]),
+                outline=(17, 24, 39),
+            )
+            text = format_ns(values[op][lang])
+            bbox = draw.textbbox((0, 0), text, font=font)
+            tw = bbox[2] - bbox[0]
+            draw.text((x + (col_w - tw) / 2, y + 8), text, fill=(17, 24, 39), font=font)
+
+    ly = height - 22
+    draw.text((8, ly - 4), "row-relative:", fill=(156, 163, 175), font=font)
+    legend = ["fast", "", "", "mid", "", "", "slow"]
+    for i, color in enumerate(PALETTE):
+        x = 100 + i * 46
+        draw.rectangle([x, ly - 12, x + 40, ly + 2], fill=hex_to_rgb(color))
+        if legend[i]:
+            bbox = draw.textbbox((0, 0), legend[i], font=font_small)
+            tw = bbox[2] - bbox[0]
+            draw.text(
+                (x + (40 - tw) / 2, ly - 24),
+                legend[i],
+                fill=(156, 163, 175),
+                font=font_small,
+            )
+
+    img.save(PNG_PATH)
+    return PNG_PATH.exists() and PNG_PATH.stat().st_size > 0
+
+
+def write_png_via_chrome(svg: str, dest: Path) -> bool:
+    """Rasterize the SVG via headless Chrome so GitHub README shows a fresh PNG."""
+    chrome = shutil.which("google-chrome") or shutil.which("chromium") or shutil.which(
+        "chromium-browser"
+    )
+    if not chrome:
+        return False
+
+    # Parse intrinsic size from the SVG root tag.
+    width, height = 1280, 520
+    try:
+        head = svg.split(">", 1)[0]
+        if 'width="' in head:
+            width = int(float(head.split('width="', 1)[1].split('"', 1)[0]))
+        if 'height="' in head:
+            height = int(float(head.split('height="', 1)[1].split('"', 1)[0]))
+    except (TypeError, ValueError):
+        pass
+
+    with tempfile.TemporaryDirectory(prefix="filefs-bench-matrix-") as tmp:
+        tmp_path = Path(tmp)
+        html_path = tmp_path / "matrix.html"
+        shot_path = tmp_path / "shot.png"
+        html_path.write_text(
+            "<!doctype html><html><head><meta charset='utf-8'>"
+            f"<style>html,body{{margin:0;padding:0;background:#111827;width:{width}px;height:{height}px;overflow:hidden}}</style>"
+            f"</head><body>{svg}</body></html>",
+            encoding="utf-8",
+        )
+        cmd = [
+            chrome,
+            "--headless=new",
+            "--disable-gpu",
+            "--no-sandbox",
+            "--hide-scrollbars",
+            "--force-device-scale-factor=1",
+            f"--user-data-dir={tmp_path / 'chrome-profile'}",
+            f"--window-size={width},{height}",
+            f"--screenshot={shot_path}",
+            html_path.resolve().as_uri(),
+        ]
+        try:
+            proc = subprocess.run(cmd, capture_output=True, text=True, check=False, timeout=30)
+        except subprocess.TimeoutExpired:
+            return False
+        if proc.returncode != 0 or not shot_path.exists():
+            return False
+        dest.write_bytes(shot_path.read_bytes())
+    return dest.exists() and dest.stat().st_size > 0
+
+
 def main() -> None:
     doc = load_results()
     html_table = render_html(doc)
     errors_md = render_errors(doc)
     svg = render_svg(doc)
     SVG_PATH.write_text(svg, encoding="utf-8")
+    png_ok = write_png(doc)
 
     generated = doc.get("generated_at_unix")
     iters = doc.get("workload", {}).get("iterations", WORKLOAD["iterations"])
     payload = doc.get("workload", {}).get("payload_bytes", WORKLOAD["payload_bytes"])
+    # Cache-bust GitHub's image CDN when results change.
+    bust = f"?v={generated}" if generated else ""
+    image_md = (
+        f"![FileFS benchmark matrix](bench/matrix.png{bust})"
+        if png_ok
+        else f"![FileFS benchmark matrix](bench/matrix.svg{bust})"
+    )
 
     section_lines = [
         "",
@@ -238,11 +387,13 @@ def main() -> None:
         f"Workload: `{WORKLOAD['name']}` · iterations={iters} · payload={payload} bytes.",
         "Cell colors are **row-relative** (green = faster for that API among measured ports, red = slower).",
         "",
-        "![FileFS benchmark matrix](bench/matrix.svg)",
-        "",
-        "<details><summary>Numeric matrix (HTML)</summary>",
+        image_md,
         "",
         html_table.rstrip(),
+        "",
+        "<details><summary>Source SVG</summary>",
+        "",
+        f"[`bench/matrix.svg`](bench/matrix.svg{bust})",
         "",
         "</details>",
         "",
@@ -268,6 +419,10 @@ def main() -> None:
     patch_readme("\n".join(section_lines))
     print(f"updated {README}")
     print(f"updated {SVG_PATH}")
+    if png_ok:
+        print(f"updated {PNG_PATH}")
+    else:
+        print(f"warning: PNG rasterization skipped; README falls back to SVG")
 
 
 if __name__ == "__main__":

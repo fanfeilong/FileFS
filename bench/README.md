@@ -19,8 +19,12 @@ python3 bench/render_matrix.py
 Results land in:
 
 - `bench/results/latest.json` — machine-readable timings (`ns_per_op`)
-- `bench/matrix.svg` — heatmap image
+- `bench/matrix.png` — heatmap image embedded in the root README
+- `bench/matrix.svg` — vector source of the same heatmap
 - Root `README.md` section between `<!-- BENCH_MATRIX_BEGIN -->` markers
+
+Rendering the PNG requires Pillow (`pip install pillow`). Without it, the
+harness still writes the SVG and falls back to that image link.
 
 ## Workload
 
