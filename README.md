@@ -12,6 +12,7 @@ FileFS: Implement a virtual file system within a single file.
 ├── go/         # Pure-Go port
 ├── java/       # Pure Java 21 port
 ├── kotlin/     # Pure Kotlin/JVM port
+├── lua/        # Pure Lua 5.4 port
 ├── moonbit/    # Pure MoonBit port
 ├── nodejs/     # Pure JavaScript ESM port
 ├── python/     # Python package (CPython bindings to c/)
@@ -78,6 +79,15 @@ cd kotlin
 ```
 
 See [kotlin/README.md](kotlin/README.md).
+
+## Lua
+
+```bash
+cd lua
+lua5.4 tests/run_tests.lua
+```
+
+See [lua/README.md](lua/README.md).
 
 ## MoonBit
 
