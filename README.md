@@ -11,6 +11,7 @@ FileFS: Implement a virtual file system within a single file.
 ├── dotnet/     # Pure C# / .NET port
 ├── go/         # Pure-Go port
 ├── java/       # Pure Java 21 port
+ ├── nodejs/     # Pure JavaScript ESM port
 ├── python/     # Python package (CPython bindings to c/)
 ├── rust/       # Pure-Rust port
 ├── zig/        # Pure-Zig port
@@ -65,6 +66,15 @@ mvn -f java/pom.xml test
 
 See [java/README.md](java/README.md).
 
+## Node.js
+
+```bash
+cd nodejs
+npm test
+```
+
+See [nodejs/README.md](nodejs/README.md).
+
 ## Python
 
 ```bash
@@ -95,4 +105,4 @@ zig build test
 
 See [zig/README.md](zig/README.md).
 
-C / C++ / .NET / Go / Java / Python / Rust / Zig share the same on-disk format (512-byte blocks, magic `78 11 45 14`).
+C / C++ / .NET / Go / Java / Node.js / Python / Rust / Zig share the same on-disk format (512-byte blocks, magic `78 11 45 14`).
