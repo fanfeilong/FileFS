@@ -1,0 +1,82 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "fanfeilong/filefs"
+
+import {
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn mkfs(String) -> Unit raise
+
+// Errors
+pub(all) suberror FileFsError {
+  FileFsError(String)
+} derive(@debug.Debug)
+
+// Types and methods
+pub(all) struct DirEntry {
+  type_ : FileType
+  name : String
+} derive(Eq, @debug.Debug)
+pub fn DirEntry::file_type(Self) -> FileType
+pub fn DirEntry::name_length(Self) -> Int
+
+pub struct DirectoryHandle {
+  // private fields
+}
+pub fn DirectoryHandle::absolute_path(Self) -> String
+pub fn DirectoryHandle::close(Self) -> Unit
+pub fn DirectoryHandle::is_open(Self) -> Bool
+
+pub struct FileHandle {
+  // private fields
+}
+pub fn FileHandle::close(Self) -> Unit
+pub fn FileHandle::is_open(Self) -> Bool
+
+pub struct FileSystem {
+  // private fields
+}
+pub fn FileSystem::begin(Self) -> Bool
+pub fn FileSystem::chdir(Self, String) -> Unit raise
+pub fn FileSystem::close(Self, FileHandle) -> Unit
+pub fn FileSystem::close_dir(Self, DirectoryHandle) -> Unit
+pub fn FileSystem::commit(Self) -> Bool
+pub fn FileSystem::copy_file(Self, String, String) -> Unit raise
+pub fn FileSystem::dir_exists(Self, String) -> Bool raise
+pub fn FileSystem::file_exists(Self, String) -> Bool raise
+pub fn FileSystem::getcwd(Self) -> String
+pub fn FileSystem::is_mounted(Self) -> Bool
+pub fn FileSystem::mkdir(Self, String) -> Unit raise
+pub fn FileSystem::mount(Self, String) -> Unit raise
+pub fn FileSystem::new() -> Self
+pub fn FileSystem::open(Self, String, String) -> FileHandle raise
+pub fn FileSystem::open_dir(Self, String) -> DirectoryHandle raise
+pub fn FileSystem::read(Self, FileHandle, Array[Byte], offset? : Int, length? : Int) -> Int raise
+pub fn FileSystem::read_dir(Self, DirectoryHandle) -> DirEntry? raise
+pub fn FileSystem::remove_file(Self, String) -> Unit raise
+pub fn FileSystem::rename(Self, String, String) -> Unit raise
+pub fn FileSystem::rewind(Self, FileHandle) -> Unit raise
+pub fn FileSystem::rmdir(Self, String) -> Unit raise
+pub fn FileSystem::rollback(Self) -> Unit
+pub fn FileSystem::seek(Self, FileHandle, Int, SeekWhence) -> Bool raise
+pub fn FileSystem::tell(Self, FileHandle) -> Int raise
+pub fn FileSystem::umount(Self) -> Unit
+pub fn FileSystem::write(Self, FileHandle, Array[Byte], offset? : Int, length? : Int) -> Int raise
+
+pub(all) enum FileType {
+  File
+  Dir
+  Root
+} derive(Eq, @debug.Debug)
+
+pub(all) enum SeekWhence {
+  Set
+  Cur
+  End
+} derive(Eq, @debug.Debug)
+
+// Type aliases
+
+// Traits
+
