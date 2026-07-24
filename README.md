@@ -12,6 +12,7 @@ FileFS: Implement a virtual file system within a single file.
 ├── go/         # Pure-Go port
 ├── java/       # Pure Java 21 port
 ├── kotlin/     # Pure Kotlin/JVM port
+├── lua/        # Pure Lua 5.4 port
 ├── moonbit/    # Pure MoonBit port
 ├── nodejs/     # Pure JavaScript ESM port
 ├── python/     # Python package (CPython bindings to c/)
