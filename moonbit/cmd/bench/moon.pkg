@@ -1,0 +1,10 @@
+import {
+  "fanfeilong/filefs",
+  "moonbitlang/x/fs",
+  "moonbitlang/x/sys",
+  "moonbitlang/core/strconv",
+}
+
+options(
+  "is-main": true,
+)

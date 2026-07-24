@@ -10,8 +10,15 @@ moonbit/.mooncakes/
 bench/runners/**/build/
 bench/runners/**/target/
 bench/runners/**/.venv/
+bench/runners/**/.zig-cache/
+bench/runners/**/zig-cache/
+bench/runners/**/classes/
+bench/runners/**/bin/
+bench/runners/**/obj/
+bench/runners/**/bench-tmp/
 bench/runners/c/build/
 bench/results/results-*.json
+bench/**/__pycache__/
 nodejs/node_modules/
 rust/target/
 swift/.build/
@@ -82,6 +89,7 @@ python/filefs/*.pyd
 # Kernel Module Compile Results
 *.mod*
 !**/moon.mod
+!**/go.mod
 *.cmd
 .tmp_versions/
 modules.order

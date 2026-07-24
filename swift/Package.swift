@@ -10,11 +10,19 @@ let package = Package(
         .library(
             name: "FileFS",
             targets: ["FileFS"]
-        )
+        ),
+        .executable(
+            name: "FileFsBench",
+            targets: ["FileFsBench"]
+        ),
     ],
     targets: [
         .target(
             name: "FileFS"
+        ),
+        .executableTarget(
+            name: "FileFsBench",
+            dependencies: ["FileFS"]
         ),
         .testTarget(
             name: "FileFSTests",

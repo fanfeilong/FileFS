@@ -1,6 +1,9 @@
 {
-  "errors": {},
-  "generated_at_unix": 1784875412,
+  "errors": {
+    "java": "/workspace/bench/runners/java/Bench.java:98: error: unreported exception IOException; must be caught or declared to be thrown\n      fsys.mount(image);\n                ^\n1 error\n",
+    "zig": "zig runner failed (1):\nstdout:\n\nstderr:\nrun\n+- run exe filefs-bench\n   +- compile exe filefs-bench ReleaseFast native 2 errors\nbench.zig:79:17: error: mutable 'counter' not accessible from here\n                counter += 1;\n                ^~~~~~~\nbench.zig:47:9: note: declared mutable here\n    var counter: usize = 0;\n        ^~~~~~~\nbench.zig:76:52: note: crosses namespace boundary here\n        const result = try timeBody(iters, warmup, struct {\n                                                   ^~~~~~\nbench.zig:29:23: error: root source file struct 'heap' has no member named 'GeneralPurposeAllocator'\n    var gpa = std.heap.GeneralPurposeAllocator(.{}){};\n              ~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~\n/opt/zig-0.16.0/lib/std/heap.zig:1:1: note: struct declared here\nconst std = @import(\"std.zig\");\n^~~~~\nreferenced by:\n    callMain [inlined]: /opt/zig-0.16.0/lib/std/start.zig:698:59\n    callMainWithArgs [inlined]: /opt/zig-0.16.0/lib/std/start.zig:638:20\n    posixCallMainAndExit: /opt/zig-0.16.0/lib/std/start.zig:590:38\n    2 reference(s) hidden; use '-freference-trace=5' to see all references\nerror: 2 compilation errors\nfailed command: /opt/zig-0.16.0/zig build-exe -OReleaseFast --dep filefs -Mroot=/workspace/bench/runners/zig/bench.zig -OReleaseFast -Mfilefs=/workspace/zig/src/root.zig --cache-dir .zig-cache --global-cache-dir /home/ubuntu/.cache/zig --name filefs-bench --zig-lib-dir /opt/zig-0.16.0/lib/ --listen=-\n\nBuild Summary: 0/3 steps succeeded (1 failed)\nrun transitive failure\n+- run exe filefs-bench transitive failure\n   +- compile exe filefs-bench ReleaseFast native 2 errors\n\nerror: the following build command failed with exit code 1:\n.zig-cache/o/d69ce532a58864c19954cc68994f04bf/build /opt/zig-0.16.0/zig /opt/zig-0.16.0/lib /workspace/bench/runners/zig .zig-cache /home/ubuntu/.cache/zig --seed 0xec0c9452 -Ze101fa367061a3e9 run -Doptimize=ReleaseFast -- 20 2\n"
+  },
+  "generated_at_unix": 1784876254,
   "languages": {
     "c": {
       "language": "c",
@@ -64,6 +67,130 @@
       },
       "runtime": "c11"
     },
+    "cpp": {
+      "language": "cpp",
+      "ops": {
+        "chdir_getcwd": {
+          "iters": 20,
+          "ns_per_op": 948.5
+        },
+        "copy_file": {
+          "iters": 20,
+          "ns_per_op": 934513
+        },
+        "exists": {
+          "iters": 20,
+          "ns_per_op": 2354
+        },
+        "mkdir": {
+          "iters": 20,
+          "ns_per_op": 539283
+        },
+        "mkfs": {
+          "iters": 20,
+          "ns_per_op": 273976
+        },
+        "mount_umount": {
+          "iters": 20,
+          "ns_per_op": 4439.5
+        },
+        "open_write_close": {
+          "iters": 20,
+          "ns_per_op": 427296
+        },
+        "read_4kib": {
+          "iters": 20,
+          "ns_per_op": 3024
+        },
+        "readdir": {
+          "iters": 20,
+          "ns_per_op": 1527.5
+        },
+        "remove_file": {
+          "iters": 20,
+          "ns_per_op": 823234
+        },
+        "rename": {
+          "iters": 20,
+          "ns_per_op": 1204680.0
+        },
+        "seek_tell_rewind": {
+          "iters": 20,
+          "ns_per_op": 2814
+        },
+        "txn_commit": {
+          "iters": 20,
+          "ns_per_op": 498814
+        },
+        "write_4kib": {
+          "iters": 20,
+          "ns_per_op": 899055
+        }
+      },
+      "runtime": "c++20"
+    },
+    "dotnet": {
+      "language": "dotnet",
+      "ops": {
+        "chdir_getcwd": {
+          "iters": 20,
+          "ns_per_op": 2600
+        },
+        "copy_file": {
+          "iters": 20,
+          "ns_per_op": 1675450
+        },
+        "exists": {
+          "iters": 20,
+          "ns_per_op": 3550
+        },
+        "mkdir": {
+          "iters": 20,
+          "ns_per_op": 670350
+        },
+        "mkfs": {
+          "iters": 20,
+          "ns_per_op": 361150
+        },
+        "mount_umount": {
+          "iters": 20,
+          "ns_per_op": 7800
+        },
+        "open_write_close": {
+          "iters": 20,
+          "ns_per_op": 506850
+        },
+        "read_4kib": {
+          "iters": 20,
+          "ns_per_op": 4250
+        },
+        "readdir": {
+          "iters": 20,
+          "ns_per_op": 4800
+        },
+        "remove_file": {
+          "iters": 20,
+          "ns_per_op": 1044400
+        },
+        "rename": {
+          "iters": 20,
+          "ns_per_op": 1486700
+        },
+        "seek_tell_rewind": {
+          "iters": 20,
+          "ns_per_op": 6900
+        },
+        "txn_commit": {
+          "iters": 20,
+          "ns_per_op": 739800
+        },
+        "write_4kib": {
+          "iters": 20,
+          "ns_per_op": 1198250
+        }
+      },
+      "runtime": ".NET 10.0.10"
+    },
     "go": {
       "language": "go",
       "ops": {
@@ -125,6 +252,68 @@
         }
       },
       "runtime": "go1.22.2"
+    },
+    "kotlin": {
+      "language": "kotlin",
+      "ops": {
+        "chdir_getcwd": {
+          "iters": 20,
+          "ns_per_op": 5186.0
+        },
+        "copy_file": {
+          "iters": 20,
+          "ns_per_op": 1141536.5
+        },
+        "exists": {
+          "iters": 20,
+          "ns_per_op": 1767.0
+        },
+        "mkdir": {
+          "iters": 20,
+          "ns_per_op": 469168.0
+        },
+        "mkfs": {
+          "iters": 20,
+          "ns_per_op": 308629.5
+        },
+        "mount_umount": {
+          "iters": 20,
+          "ns_per_op": 48973.0
+        },
+        "open_write_close": {
+          "iters": 20,
+          "ns_per_op": 521026.5
+        },
+        "read_4kib": {
+          "iters": 20,
+          "ns_per_op": 3885.5
+        },
+        "readdir": {
+          "iters": 20,
+          "ns_per_op": 11926.0
+        },
+        "remove_file": {
+          "iters": 20,
+          "ns_per_op": 1004547.0
+        },
+        "rename": {
+          "iters": 20,
+          "ns_per_op": 1672509.5
+        },
+        "seek_tell_rewind": {
+          "iters": 20,
+          "ns_per_op": 4240.0
+        },
+        "txn_commit": {
+          "iters": 20,
+          "ns_per_op": 842895.5
+        },
+        "write_4kib": {
+          "iters": 20,
+          "ns_per_op": 1114661.5
+        }
+      },
+      "runtime": "kotlinc"
     },
     "lua": {
       "language": "lua",

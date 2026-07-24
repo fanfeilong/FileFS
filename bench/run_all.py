@@ -145,15 +145,70 @@ def run_c() -> dict:
 
 
 def run_zig() -> dict:
-    raise NotImplementedError("zig bench runner pending — see bench/README.md")
+    if not which("zig"):
+        raise RuntimeError("zig not found")
+    runner = BENCH / "runners" / "zig"
+    proc = run_cmd(
+        [
+            "zig",
+            "build",
+            "run",
+            "-Doptimize=ReleaseFast",
+            "--",
+            str(WORKLOAD["iterations"]),
+            str(WORKLOAD["warmup"]),
+        ],
+        cwd=runner,
+        timeout=600,
+    )
+    return parse_json_stdout(proc, "zig")
 
 
 def run_java() -> dict:
-    raise NotImplementedError("java bench runner pending — see bench/README.md")
+    if not (which("javac") and which("java")):
+        raise RuntimeError("java/javac not found")
+    runner = BENCH / "runners" / "java"
+    classes = runner / "classes"
+    classes.mkdir(parents=True, exist_ok=True)
+    sources = list((ROOT / "java" / "src" / "main" / "java").rglob("*.java"))
+    sources += [runner / "Bench.java"]
+    compile_cmd = ["javac", "--release", "21", "-d", str(classes), *[str(s) for s in sources]]
+    built = run_cmd(compile_cmd, timeout=300)
+    if built.returncode != 0:
+        raise RuntimeError(built.stderr[-2000:] or built.stdout[-2000:])
+    proc = run_cmd(
+        ["java", "-cp", str(classes), "Bench", str(WORKLOAD["iterations"]), str(WORKLOAD["warmup"])]
+    )
+    return parse_json_stdout(proc, "java")
 
 
 def run_kotlin() -> dict:
-    raise NotImplementedError("kotlin bench runner pending — see bench/README.md")
+    kotlinc = which("kotlinc")
+    java = which("java")
+    if not kotlinc or not java:
+        raise RuntimeError("kotlinc/java not found")
+    runner = BENCH / "runners" / "kotlin"
+    out = runner / "build"
+    out.mkdir(parents=True, exist_ok=True)
+    jar = out / "bench.jar"
+    sources = list((ROOT / "kotlin" / "src" / "main" / "kotlin").rglob("*.kt"))
+    sources += [runner / "Bench.kt"]
+    compile_cmd = [
+        kotlinc,
+        "-jvm-target",
+        "21",
+        "-include-runtime",
+        "-d",
+        str(jar),
+        *[str(s) for s in sources],
+    ]
+    built = run_cmd(compile_cmd, timeout=300)
+    if built.returncode != 0:
+        raise RuntimeError(built.stderr[-2000:] or built.stdout[-2000:])
+    proc = run_cmd(
+        ["java", "-cp", str(jar), "filefs.bench.BenchKt", str(WORKLOAD["iterations"]), str(WORKLOAD["warmup"])]
+    )
+    return parse_json_stdout(proc, "kotlin")
 
 
 def run_python() -> dict:
@@ -175,23 +230,100 @@ def run_python() -> dict:
 
 
 def run_dotnet() -> dict:
-    raise NotImplementedError("dotnet bench runner pending — see bench/README.md")
+    if not which("dotnet"):
+        raise RuntimeError("dotnet not found")
+    runner = BENCH / "runners" / "dotnet"
+    proc = run_cmd(
+        [
+            "dotnet",
+            "run",
+            "-c",
+            "Release",
+            "--project",
+            str(runner / "FileFsBench.csproj"),
+            "--",
+            str(WORKLOAD["iterations"]),
+            str(WORKLOAD["warmup"]),
+        ],
+        timeout=600,
+    )
+    return parse_json_stdout(proc, "dotnet")
 
 
 def run_swift() -> dict:
-    raise NotImplementedError("swift bench runner pending — see bench/README.md")
+    if not which("swift"):
+        raise RuntimeError("swift not found")
+    runner = ROOT / "swift"
+    proc = run_cmd(
+        [
+            "swift",
+            "run",
+            "-c",
+            "release",
+            "FileFsBench",
+            str(WORKLOAD["iterations"]),
+            str(WORKLOAD["warmup"]),
+        ],
+        cwd=runner,
+        timeout=600,
+    )
+    return parse_json_stdout(proc, "swift")
 
 
 def run_moonbit() -> dict:
-    raise NotImplementedError("moonbit bench runner pending — see bench/README.md")
+    if not which("moon"):
+        raise RuntimeError("moon not found")
+    # Prefer JS target so Date.now timing works in the bench harness.
+    proc = run_cmd(
+        [
+            "moon",
+            "run",
+            "cmd/bench",
+            "--target",
+            "js",
+            "--",
+            str(WORKLOAD["iterations"]),
+            str(WORKLOAD["warmup"]),
+        ],
+        cwd=ROOT / "moonbit",
+        timeout=600,
+    )
+    return parse_json_stdout(proc, "moonbit")
 
 
 def run_cpp() -> dict:
-    raise NotImplementedError("cpp bench runner pending — see bench/README.md")
+    cmake = which("cmake")
+    if not cmake:
+        raise RuntimeError("cmake not found")
+    build = BENCH / "runners" / "cpp" / "build"
+    build.mkdir(parents=True, exist_ok=True)
+    conf = run_cmd(
+        ["cmake", "-S", str(BENCH / "runners" / "cpp"), "-B", str(build), "-DCMAKE_BUILD_TYPE=Release"]
+    )
+    if conf.returncode != 0:
+        raise RuntimeError(conf.stderr[-2000:] or conf.stdout[-2000:])
+    built = run_cmd(["cmake", "--build", str(build), "-j"], timeout=600)
+    if built.returncode != 0:
+        raise RuntimeError(built.stderr[-2000:] or built.stdout[-2000:])
+    binary = build / "filefs_bench"
+    proc = run_cmd([str(binary), str(WORKLOAD["iterations"]), str(WORKLOAD["warmup"])])
+    return parse_json_stdout(proc, "cpp")
 
 
 def run_wasm() -> dict:
-    raise NotImplementedError("wasm bench runner pending — see bench/README.md")
+    node = which("node")
+    zig = which("zig")
+    if not node or not zig:
+        raise RuntimeError("node/zig required for wasm bench")
+    wasm_dir = ROOT / "wasm"
+    built = run_cmd(["zig", "build", "-Doptimize=ReleaseFast"], cwd=wasm_dir, timeout=600)
+    if built.returncode != 0:
+        raise RuntimeError(built.stderr[-2000:] or built.stdout[-2000:])
+    script = BENCH / "runners" / "wasm" / "bench.mjs"
+    proc = run_cmd(
+        [node, str(script), str(WORKLOAD["iterations"]), str(WORKLOAD["warmup"])],
+    )
+    return parse_json_stdout(proc, "wasm")
 
 
 RUNNERS = {
@@ -212,7 +344,22 @@ RUNNERS = {
 }
 
 
-IMPLEMENTED = ("c", "go", "lua", "nodejs", "python", "rust")
+IMPLEMENTED = (
+    "c",
+    "cpp",
+    "dotnet",
+    "go",
+    "java",
+    "kotlin",
+    "lua",
+    "moonbit",
+    "nodejs",
+    "python",
+    "rust",
+    "swift",
+    "wasm",
+    "zig",
+)
 
 
 def main() -> int:

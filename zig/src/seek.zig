@@ -29,7 +29,7 @@ pub fn fseek(self: anytype, stream: *types.File, offset: i64, whence: i32) bool 
                 }
                 stream.pos_offset = types.BlockSize;
                 stream.pos += types.BlockSize - pos_offset;
-                new_offset -= @as(i64, types.BlockSize - pos_offset);
+                new_offset -= @as(i64, @intCast(types.BlockSize - pos_offset));
                 pos_offset = types.BlockHead;
 
                 if (!block_mod.readblock(self, blockindex, block[0..])) return true;
@@ -131,7 +131,7 @@ pub fn fseek(self: anytype, stream: *types.File, offset: i64, whence: i32) bool 
                 }
                 stream.pos_offset = types.BlockSize;
                 stream.pos += types.BlockSize - pos_offset;
-                new_offset -= @as(i64, types.BlockSize - pos_offset);
+                new_offset -= @as(i64, @intCast(types.BlockSize - pos_offset));
                 pos_offset = types.BlockHead;
 
                 if (!block_mod.readblock(self, blockindex, block[0..])) return true;
