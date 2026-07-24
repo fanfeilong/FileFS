@@ -1,0 +1,96 @@
+{
+  "name": "filefs-full-api",
+  "version": 1,
+  "description": "Cross-language FileFS full-API microbenchmark workload.",
+  "warmup": 2,
+  "iterations": 20,
+  "payload_bytes": 4096,
+  "ops": [
+    {
+      "id": "mkfs",
+      "label": "mkfs",
+      "group": "lifecycle"
+    },
+    {
+      "id": "mount_umount",
+      "label": "mount+umount",
+      "group": "lifecycle"
+    },
+    {
+      "id": "mkdir",
+      "label": "mkdir",
+      "group": "dirs"
+    },
+    {
+      "id": "chdir_getcwd",
+      "label": "chdir+getcwd",
+      "group": "dirs"
+    },
+    {
+      "id": "open_write_close",
+      "label": "open(w)+close",
+      "group": "files"
+    },
+    {
+      "id": "write_4kib",
+      "label": "write 4KiB",
+      "group": "io"
+    },
+    {
+      "id": "read_4kib",
+      "label": "read 4KiB",
+      "group": "io"
+    },
+    {
+      "id": "seek_tell_rewind",
+      "label": "seek+tell+rewind",
+      "group": "io"
+    },
+    {
+      "id": "copy_file",
+      "label": "copy_file",
+      "group": "files"
+    },
+    {
+      "id": "rename",
+      "label": "rename",
+      "group": "files"
+    },
+    {
+      "id": "remove_file",
+      "label": "remove_file",
+      "group": "files"
+    },
+    {
+      "id": "readdir",
+      "label": "opendir+readdir",
+      "group": "dirs"
+    },
+    {
+      "id": "exists",
+      "label": "file/dir exists",
+      "group": "query"
+    },
+    {
+      "id": "txn_commit",
+      "label": "begin+write+commit",
+      "group": "txn"
+    }
+  ],
+  "languages": [
+    "c",
+    "cpp",
+    "dotnet",
+    "go",
+    "java",
+    "kotlin",
+    "lua",
+    "moonbit",
+    "nodejs",
+    "python",
+    "rust",
+    "swift",
+    "wasm",
+    "zig"
+  ]
+}
