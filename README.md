@@ -11,9 +11,12 @@ FileFS: Implement a virtual file system within a single file.
 ├── dotnet/     # Pure C# / .NET port
 ├── go/         # Pure-Go port
 ├── java/       # Pure Java 21 port
- ├── nodejs/     # Pure JavaScript ESM port
+├── kotlin/     # Pure Kotlin/JVM port
+├── nodejs/     # Pure JavaScript ESM port
 ├── python/     # Python package (CPython bindings to c/)
 ├── rust/       # Pure-Rust port
+├── swift/      # Pure Swift port
+├── wasm/       # WebAssembly (Zig) + JS glue (in-memory image)
 ├── zig/        # Pure-Zig port
 ├── LICENSE
 └── README.md
@@ -66,6 +69,15 @@ mvn -f java/pom.xml test
 
 See [java/README.md](java/README.md).
 
+## Kotlin
+
+```bash
+cd kotlin
+./build.sh
+```
+
+See [kotlin/README.md](kotlin/README.md).
+
 ## Node.js
 
 ```bash
@@ -96,6 +108,26 @@ cargo test
 
 See [rust/README.md](rust/README.md).
 
+## Swift
+
+```bash
+cd swift
+swift test
+```
+
+See [swift/README.md](swift/README.md).
+
+## WebAssembly
+
+```bash
+cd wasm
+zig build
+npm test
+```
+
+In-memory FileFS image for browser/Node via Zig `wasm32-freestanding` + JS glue.  
+See [wasm/README.md](wasm/README.md).
+
 ## Zig
 
 ```bash
@@ -105,4 +137,5 @@ zig build test
 
 See [zig/README.md](zig/README.md).
 
-C / C++ / .NET / Go / Java / Node.js / Python / Rust / Zig share the same on-disk format (512-byte blocks, magic `78 11 45 14`).
+Host language ports share the same on-disk format (512-byte blocks, magic `78 11 45 14`).  
+The Wasm port uses the same block layout in an in-memory image suitable for browsers.
