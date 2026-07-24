@@ -169,9 +169,7 @@ Cross-language full-API microbenchmarks (`ns/op`, lower is better).
 Workload: `filefs-full-api` · iterations=20 · payload=4096 bytes.
 Cell colors are **row-relative** (green = faster for that API among measured ports, red = slower).
 
-![FileFS benchmark matrix](bench/matrix.svg)
-
-<details><summary>Numeric matrix (HTML)</summary>
+![FileFS benchmark matrix](bench/matrix.png?v=1784876936)
 
 <table>
 <thead><tr>
@@ -208,7 +206,6 @@ Cell colors are **row-relative** (green = faster for that API among measured por
 <td bgcolor="#1b7f4e" title="wasm / mkfs: 1490 ns/op" align="right"><code>1.5µs</code></td>
 <td bgcolor="#f9e79f" title="zig / mkfs: 194190 ns/op" align="right"><code>194.2µs</code></td>
 </tr>
-</tbody></table>
 <tr>
 <th bgcolor="#34495e"><font color="#ecf0f1">mount+umount</font></th>
 <td bgcolor="#1b7f4e" title="c / mount_umount: 2994 ns/op" align="right"><code>3.0µs</code></td>
@@ -226,7 +223,6 @@ Cell colors are **row-relative** (green = faster for that API among measured por
 <td bgcolor="#1b7f4e" title="wasm / mount_umount: 735 ns/op" align="right"><code>735ns</code></td>
 <td bgcolor="#c7e89a" title="zig / mount_umount: 4374 ns/op" align="right"><code>4.4µs</code></td>
 </tr>
-</tbody></table>
 <tr>
 <th bgcolor="#34495e"><font color="#ecf0f1">mkdir</font></th>
 <td bgcolor="#57a773" title="c / mkdir: 333892 ns/op" align="right"><code>333.9µs</code></td>
@@ -244,7 +240,6 @@ Cell colors are **row-relative** (green = faster for that API among measured por
 <td bgcolor="#1b7f4e" title="wasm / mkdir: 3372 ns/op" align="right"><code>3.4µs</code></td>
 <td bgcolor="#c7e89a" title="zig / mkdir: 410940 ns/op" align="right"><code>410.9µs</code></td>
 </tr>
-</tbody></table>
 <tr>
 <th bgcolor="#34495e"><font color="#ecf0f1">chdir+getcwd</font></th>
 <td bgcolor="#1b7f4e" title="c / chdir_getcwd: 1089 ns/op" align="right"><code>1.1µs</code></td>
@@ -262,7 +257,6 @@ Cell colors are **row-relative** (green = faster for that API among measured por
 <td bgcolor="#f9e79f" title="wasm / chdir_getcwd: 4024 ns/op" align="right"><code>4.0µs</code></td>
 <td bgcolor="#e67e22" title="zig / chdir_getcwd: 4669 ns/op" align="right"><code>4.7µs</code></td>
 </tr>
-</tbody></table>
 <tr>
 <th bgcolor="#34495e"><font color="#ecf0f1">open(w)+close</font></th>
 <td bgcolor="#57a773" title="c / open_write_close: 258723 ns/op" align="right"><code>258.7µs</code></td>
@@ -280,7 +274,6 @@ Cell colors are **row-relative** (green = faster for that API among measured por
 <td bgcolor="#1b7f4e" title="wasm / open_write_close: 3505 ns/op" align="right"><code>3.5µs</code></td>
 <td bgcolor="#c7e89a" title="zig / open_write_close: 323584 ns/op" align="right"><code>323.6µs</code></td>
 </tr>
-</tbody></table>
 <tr>
 <th bgcolor="#34495e"><font color="#ecf0f1">write 4KiB</font></th>
 <td bgcolor="#57a773" title="c / write_4kib: 606398 ns/op" align="right"><code>606.4µs</code></td>
@@ -298,7 +291,6 @@ Cell colors are **row-relative** (green = faster for that API among measured por
 <td bgcolor="#1b7f4e" title="wasm / write_4kib: 4006 ns/op" align="right"><code>4.0µs</code></td>
 <td bgcolor="#f9e79f" title="zig / write_4kib: 1119810 ns/op" align="right"><code>1.12ms</code></td>
 </tr>
-</tbody></table>
 <tr>
 <th bgcolor="#34495e"><font color="#ecf0f1">read 4KiB</font></th>
 <td bgcolor="#1b7f4e" title="c / read_4kib: 3156 ns/op" align="right"><code>3.2µs</code></td>
@@ -316,7 +308,6 @@ Cell colors are **row-relative** (green = faster for that API among measured por
 <td bgcolor="#1b7f4e" title="wasm / read_4kib: 3244 ns/op" align="right"><code>3.2µs</code></td>
 <td bgcolor="#f5b041" title="zig / read_4kib: 10672 ns/op" align="right"><code>10.7µs</code></td>
 </tr>
-</tbody></table>
 <tr>
 <th bgcolor="#34495e"><font color="#ecf0f1">seek+tell+rewind</font></th>
 <td bgcolor="#1b7f4e" title="c / seek_tell_rewind: 2945 ns/op" align="right"><code>2.9µs</code></td>
@@ -334,7 +325,6 @@ Cell colors are **row-relative** (green = faster for that API among measured por
 <td bgcolor="#c7e89a" title="wasm / seek_tell_rewind: 3354 ns/op" align="right"><code>3.4µs</code></td>
 <td bgcolor="#f9e79f" title="zig / seek_tell_rewind: 6257 ns/op" align="right"><code>6.3µs</code></td>
 </tr>
-</tbody></table>
 <tr>
 <th bgcolor="#34495e"><font color="#ecf0f1">copy_file</font></th>
 <td bgcolor="#57a773" title="c / copy_file: 578328 ns/op" align="right"><code>578.3µs</code></td>
@@ -352,7 +342,6 @@ Cell colors are **row-relative** (green = faster for that API among measured por
 <td bgcolor="#1b7f4e" title="wasm / copy_file: 8098 ns/op" align="right"><code>8.1µs</code></td>
 <td bgcolor="#c7e89a" title="zig / copy_file: 736286 ns/op" align="right"><code>736.3µs</code></td>
 </tr>
-</tbody></table>
 <tr>
 <th bgcolor="#34495e"><font color="#ecf0f1">rename</font></th>
 <td bgcolor="#1b7f4e" title="c / rename: 25515 ns/op" align="right"><code>25.5µs</code></td>
@@ -370,7 +359,6 @@ Cell colors are **row-relative** (green = faster for that API among measured por
 <td bgcolor="#1b7f4e" title="wasm / rename: 11375 ns/op" align="right"><code>11.4µs</code></td>
 <td bgcolor="#c7e89a" title="zig / rename: 965852 ns/op" align="right"><code>965.9µs</code></td>
 </tr>
-</tbody></table>
 <tr>
 <th bgcolor="#34495e"><font color="#ecf0f1">remove_file</font></th>
 <td bgcolor="#1b7f4e" title="c / remove_file: 258394 ns/op" align="right"><code>258.4µs</code></td>
@@ -388,7 +376,6 @@ Cell colors are **row-relative** (green = faster for that API among measured por
 <td bgcolor="#1b7f4e" title="wasm / remove_file: 6788 ns/op" align="right"><code>6.8µs</code></td>
 <td bgcolor="#c7e89a" title="zig / remove_file: 637150 ns/op" align="right"><code>637.1µs</code></td>
 </tr>
-</tbody></table>
 <tr>
 <th bgcolor="#34495e"><font color="#ecf0f1">opendir+readdir</font></th>
 <td bgcolor="#1b7f4e" title="c / readdir: 1852 ns/op" align="right"><code>1.9µs</code></td>
@@ -406,7 +393,6 @@ Cell colors are **row-relative** (green = faster for that API among measured por
 <td bgcolor="#c0392b" title="wasm / readdir: 22335 ns/op" align="right"><code>22.3µs</code></td>
 <td bgcolor="#c7e89a" title="zig / readdir: 3768 ns/op" align="right"><code>3.8µs</code></td>
 </tr>
-</tbody></table>
 <tr>
 <th bgcolor="#34495e"><font color="#ecf0f1">file/dir exists</font></th>
 <td bgcolor="#c7e89a" title="c / exists: 2644 ns/op" align="right"><code>2.6µs</code></td>
@@ -424,7 +410,6 @@ Cell colors are **row-relative** (green = faster for that API among measured por
 <td bgcolor="#c0392b" title="wasm / exists: 23518 ns/op" align="right"><code>23.5µs</code></td>
 <td bgcolor="#f9e79f" title="zig / exists: 2976 ns/op" align="right"><code>3.0µs</code></td>
 </tr>
-</tbody></table>
 <tr>
 <th bgcolor="#34495e"><font color="#ecf0f1">begin+write+commit</font></th>
 <td bgcolor="#1b7f4e" title="c / txn_commit: 244180 ns/op" align="right"><code>244.2µs</code></td>
@@ -443,6 +428,10 @@ Cell colors are **row-relative** (green = faster for that API among measured por
 <td bgcolor="#57a773" title="zig / txn_commit: 357242 ns/op" align="right"><code>357.2µs</code></td>
 </tr>
 </tbody></table>
+
+<details><summary>Source SVG</summary>
+
+[`bench/matrix.svg`](bench/matrix.svg?v=1784876936)
 
 </details>
 
