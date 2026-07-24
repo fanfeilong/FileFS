@@ -1,0 +1,11 @@
+{
+  "": {
+    "swift-dependencies": "/workspace/swift/.build/x86_64-unknown-linux-gnu/debug/FileFSPackageTests.build/master.swiftdeps"
+  },
+  "/workspace/swift/.build/x86_64-unknown-linux-gnu/debug/FileFSPackageTests.derived/runner.swift": {
+    "dependencies": "/workspace/swift/.build/x86_64-unknown-linux-gnu/debug/FileFSPackageTests.build/runner.d",
+    "object": "/workspace/swift/.build/x86_64-unknown-linux-gnu/debug/FileFSPackageTests.build/runner.swift.o",
+    "swiftmodule": "/workspace/swift/.build/x86_64-unknown-linux-gnu/debug/FileFSPackageTests.build/runner~partial.swiftmodule",
+    "swift-dependencies": "/workspace/swift/.build/x86_64-unknown-linux-gnu/debug/FileFSPackageTests.build/runner.swiftdeps"
+  }
+}
