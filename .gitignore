@@ -7,6 +7,11 @@ kotlin/build/
 moonbit/_build/
 moonbit/target/
 moonbit/.mooncakes/
+bench/runners/**/build/
+bench/runners/**/target/
+bench/runners/**/.venv/
+bench/runners/c/build/
+bench/results/results-*.json
 nodejs/node_modules/
 rust/target/
 swift/.build/

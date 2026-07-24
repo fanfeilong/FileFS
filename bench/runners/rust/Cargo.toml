@@ -1,0 +1,7 @@
+[package]
+name = "filefs-bench"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+filefs = { path = "../../../rust" }

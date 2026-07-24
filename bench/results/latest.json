@@ -1,0 +1,400 @@
+{
+  "errors": {},
+  "generated_at_unix": 1784875412,
+  "languages": {
+    "c": {
+      "language": "c",
+      "ops": {
+        "chdir_getcwd": {
+          "iters": 20,
+          "ns_per_op": 1014.0
+        },
+        "copy_file": {
+          "iters": 20,
+          "ns_per_op": 592317.5
+        },
+        "exists": {
+          "iters": 20,
+          "ns_per_op": 2670.0
+        },
+        "mkdir": {
+          "iters": 20,
+          "ns_per_op": 366485.0
+        },
+        "mkfs": {
+          "iters": 20,
+          "ns_per_op": 560156.0
+        },
+        "mount_umount": {
+          "iters": 20,
+          "ns_per_op": 3201.5
+        },
+        "open_write_close": {
+          "iters": 20,
+          "ns_per_op": 253513.0
+        },
+        "read_4kib": {
+          "iters": 20,
+          "ns_per_op": 3265.5
+        },
+        "readdir": {
+          "iters": 20,
+          "ns_per_op": 2629.0
+        },
+        "remove_file": {
+          "iters": 20,
+          "ns_per_op": 257132.5
+        },
+        "rename": {
+          "iters": 20,
+          "ns_per_op": 33149.5
+        },
+        "seek_tell_rewind": {
+          "iters": 20,
+          "ns_per_op": 3050.0
+        },
+        "txn_commit": {
+          "iters": 20,
+          "ns_per_op": 218426.5
+        },
+        "write_4kib": {
+          "iters": 20,
+          "ns_per_op": 596540.0
+        }
+      },
+      "runtime": "c11"
+    },
+    "go": {
+      "language": "go",
+      "ops": {
+        "chdir_getcwd": {
+          "iters": 20,
+          "ns_per_op": 1958.5
+        },
+        "copy_file": {
+          "iters": 20,
+          "ns_per_op": 897706
+        },
+        "exists": {
+          "iters": 20,
+          "ns_per_op": 4677.5
+        },
+        "mkdir": {
+          "iters": 20,
+          "ns_per_op": 504669.5
+        },
+        "mkfs": {
+          "iters": 20,
+          "ns_per_op": 846767
+        },
+        "mount_umount": {
+          "iters": 20,
+          "ns_per_op": 5009.5
+        },
+        "open_write_close": {
+          "iters": 20,
+          "ns_per_op": 398875.5
+        },
+        "read_4kib": {
+          "iters": 20,
+          "ns_per_op": 10199.5
+        },
+        "readdir": {
+          "iters": 20,
+          "ns_per_op": 2970.5
+        },
+        "remove_file": {
+          "iters": 20,
+          "ns_per_op": 802108
+        },
+        "rename": {
+          "iters": 20,
+          "ns_per_op": 1864781.5
+        },
+        "seek_tell_rewind": {
+          "iters": 20,
+          "ns_per_op": 9290.5
+        },
+        "txn_commit": {
+          "iters": 20,
+          "ns_per_op": 459015
+        },
+        "write_4kib": {
+          "iters": 20,
+          "ns_per_op": 943380.5
+        }
+      },
+      "runtime": "go1.22.2"
+    },
+    "lua": {
+      "language": "lua",
+      "ops": {
+        "chdir_getcwd": {
+          "iters": 20,
+          "ns_per_op": 2000.0
+        },
+        "copy_file": {
+          "iters": 20,
+          "ns_per_op": 373428000.0
+        },
+        "exists": {
+          "iters": 20,
+          "ns_per_op": 2000.0
+        },
+        "mkdir": {
+          "iters": 20,
+          "ns_per_op": 49491500.0
+        },
+        "mkfs": {
+          "iters": 20,
+          "ns_per_op": 97000.0
+        },
+        "mount_umount": {
+          "iters": 20,
+          "ns_per_op": 94000.0
+        },
+        "open_write_close": {
+          "iters": 20,
+          "ns_per_op": 94507500.0
+        },
+        "read_4kib": {
+          "iters": 20,
+          "ns_per_op": 79000.0
+        },
+        "readdir": {
+          "iters": 20,
+          "ns_per_op": 14000.0
+        },
+        "remove_file": {
+          "iters": 20,
+          "ns_per_op": 404070500.0
+        },
+        "rename": {
+          "iters": 20,
+          "ns_per_op": 601521500.0
+        },
+        "seek_tell_rewind": {
+          "iters": 20,
+          "ns_per_op": 2000.0
+        },
+        "txn_commit": {
+          "iters": 20,
+          "ns_per_op": 322930500.0
+        },
+        "write_4kib": {
+          "iters": 20,
+          "ns_per_op": 342861500.0
+        }
+      },
+      "runtime": "Lua 5.4"
+    },
+    "nodejs": {
+      "language": "nodejs",
+      "ops": {
+        "chdir_getcwd": {
+          "iters": 20,
+          "ns_per_op": 26282.500000000655
+        },
+        "copy_file": {
+          "iters": 20,
+          "ns_per_op": 2852615.9999999977
+        },
+        "exists": {
+          "iters": 20,
+          "ns_per_op": 20969.00000000801
+        },
+        "mkdir": {
+          "iters": 20,
+          "ns_per_op": 890233.4999999972
+        },
+        "mkfs": {
+          "iters": 20,
+          "ns_per_op": 246000.9999999997
+        },
+        "mount_umount": {
+          "iters": 20,
+          "ns_per_op": 11778.500000001914
+        },
+        "open_write_close": {
+          "iters": 20,
+          "ns_per_op": 740911.5000000028
+        },
+        "read_4kib": {
+          "iters": 20,
+          "ns_per_op": 28866.499999992357
+        },
+        "readdir": {
+          "iters": 20,
+          "ns_per_op": 26530.99999997721
+        },
+        "remove_file": {
+          "iters": 20,
+          "ns_per_op": 1348635.999999999
+        },
+        "rename": {
+          "iters": 20,
+          "ns_per_op": 1678255.0000000072
+        },
+        "seek_tell_rewind": {
+          "iters": 20,
+          "ns_per_op": 48957.999999984735
+        },
+        "txn_commit": {
+          "iters": 20,
+          "ns_per_op": 675432.4999999995
+        },
+        "write_4kib": {
+          "iters": 20,
+          "ns_per_op": 1820864.9999999977
+        }
+      },
+      "runtime": "node v22.22.2"
+    },
+    "python": {
+      "language": "python",
+      "ops": {
+        "chdir_getcwd": {
+          "iters": 20,
+          "ns_per_op": 1537.0
+        },
+        "copy_file": {
+          "iters": 20,
+          "ns_per_op": 570059.5
+        },
+        "exists": {
+          "iters": 20,
+          "ns_per_op": 3024.0
+        },
+        "mkdir": {
+          "iters": 20,
+          "ns_per_op": 340321.5
+        },
+        "mkfs": {
+          "iters": 20,
+          "ns_per_op": 227997.0
+        },
+        "mount_umount": {
+          "iters": 20,
+          "ns_per_op": 3823.0
+        },
+        "open_write_close": {
+          "iters": 20,
+          "ns_per_op": 254674.0
+        },
+        "read_4kib": {
+          "iters": 20,
+          "ns_per_op": 4231.0
+        },
+        "readdir": {
+          "iters": 20,
+          "ns_per_op": 14095.5
+        },
+        "remove_file": {
+          "iters": 20,
+          "ns_per_op": 502216.5
+        },
+        "rename": {
+          "iters": 20,
+          "ns_per_op": 815149.5
+        },
+        "seek_tell_rewind": {
+          "iters": 20,
+          "ns_per_op": 3894.0
+        },
+        "txn_commit": {
+          "iters": 20,
+          "ns_per_op": 339124.0
+        },
+        "write_4kib": {
+          "iters": 20,
+          "ns_per_op": 574859.0
+        }
+      },
+      "runtime": "python 3.12.3"
+    },
+    "rust": {
+      "language": "rust",
+      "ops": {
+        "chdir_getcwd": {
+          "iters": 20,
+          "ns_per_op": 1181.0
+        },
+        "copy_file": {
+          "iters": 20,
+          "ns_per_op": 984406.5
+        },
+        "exists": {
+          "iters": 20,
+          "ns_per_op": 2719.0
+        },
+        "mkdir": {
+          "iters": 20,
+          "ns_per_op": 437639.5
+        },
+        "mkfs": {
+          "iters": 20,
+          "ns_per_op": 222264.5
+        },
+        "mount_umount": {
+          "iters": 20,
+          "ns_per_op": 3055.5
+        },
+        "open_write_close": {
+          "iters": 20,
+          "ns_per_op": 356582.5
+        },
+        "read_4kib": {
+          "iters": 20,
+          "ns_per_op": 6261.5
+        },
+        "readdir": {
+          "iters": 20,
+          "ns_per_op": 3558.5
+        },
+        "remove_file": {
+          "iters": 20,
+          "ns_per_op": 773766.5
+        },
+        "rename": {
+          "iters": 20,
+          "ns_per_op": 1146431.5
+        },
+        "seek_tell_rewind": {
+          "iters": 20,
+          "ns_per_op": 13493.5
+        },
+        "txn_commit": {
+          "iters": 20,
+          "ns_per_op": 473641.0
+        },
+        "write_4kib": {
+          "iters": 20,
+          "ns_per_op": 823545.5
+        }
+      },
+      "runtime": "rustc 1.83.0 (90b35a623 2024-11-26)"
+    }
+  },
+  "workload": {
+    "iterations": 20,
+    "name": "filefs-full-api",
+    "ops": [
+      "mkfs",
+      "mount_umount",
+      "mkdir",
+      "chdir_getcwd",
+      "open_write_close",
+      "write_4kib",
+      "read_4kib",
+      "seek_tell_rewind",
+      "copy_file",
+      "rename",
+      "remove_file",
+      "readdir",
+      "exists",
+      "txn_commit"
+    ],
+    "payload_bytes": 4096,
+    "warmup": 2
+  }
+}
