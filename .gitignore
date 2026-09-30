@@ -32,6 +32,13 @@ zig/.zig-cache/
 *.ffs
 *-j
 
+# FileXfer / FileGit local smoke-test scratch
+c/test_xfer_host/
+c/test_xfer_out/
+c/test_xfer_out_blob.bin
+c/test_git.ffs
+c/test_xfer.ffs
+
 # Python
 python/.venv/
 python/**/__pycache__/
