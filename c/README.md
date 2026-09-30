@@ -6,12 +6,15 @@ Original C implementation of FileFS: a virtual filesystem stored in a single fil
 
 ```
 c/
-  FileFS.h    # public FileFS API
-  FileFS.c    # FileFS library implementation
-  FileGit.h   # FileGit API (git-like VCS inside FileFS)
-  FileGit.c   # FileGit implementation
-  main.c      # interactive browsing shell (+ git commands)
-  test_git.sh # non-interactive FileGit smoke test
+  FileFS.h     # public FileFS API
+  FileFS.c     # FileFS library implementation
+  FileGit.h    # FileGit API (git-like VCS inside FileFS)
+  FileGit.c    # FileGit implementation
+  FileXfer.h   # host <-> FileFS binary import/export API
+  FileXfer.c   # FileXfer implementation
+  main.c       # interactive browsing shell (+ git / xfer commands)
+  test_git.sh  # FileGit smoke test
+  test_xfer.sh # binary import/export smoke test
   Makefile
 ```
 
@@ -38,6 +41,48 @@ $>echo hello.txt hello world
 $>ls
 $>cat hello.txt
 $>q
+```
+
+## FileXfer (host <-> FileFS binary bridge)
+
+FileFS already stores arbitrary bytes; the old shell only made text easy via
+`echo`/`cat`. FileXfer fills the agent-netdisk gap: pull binary assets from the
+host into the volume, and push them back out.
+
+```
+import <host_path> <ffs_path>
+export <ffs_path> <host_path>
+importtree <host_dir> <ffs_dir>
+exporttree <ffs_dir> <host_dir>
+```
+
+Notes:
+
+- Transfers are raw byte copies (NUL / high bytes preserved).
+- Each FileFS path component must still be ≤ 14 bytes.
+- `importtree` skips host names that are too long (with a warning).
+- `exporttree / ...` skips `/.git` so repo metadata is not spilled to the host.
+
+Example:
+
+```
+$>mkfs pack.ffs
+$>mount pack.ffs
+$>import ./photo.png photo.png
+$>importtree ./assets assets
+$>export photo.png /tmp/photo.png
+$>exporttree assets /tmp/assets
+$>git init
+$>git add photo.png
+$>git commit add photo
+```
+
+Automated tests:
+
+```bash
+make test          # git + xfer
+make test-git
+make test-xfer
 ```
 
 ## FileGit (git inside the single-file volume)

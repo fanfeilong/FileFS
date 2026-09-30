@@ -15,6 +15,7 @@
 
 #include "FileFS.h"
 #include "FileGit.h"
+#include "FileXfer.h"
 
 static void print_fgit_err(int rc)
 {
@@ -28,6 +29,20 @@ static void print_fgit_err(int rc)
 	case FGIT_NAME_TOO_LONG: printf("ERR: name exceeds FileFS 14-byte limit\n"); break;
 	case FGIT_CONFLICT: printf("ERR: conflict\n"); break;
 	case FGIT_EMPTY: printf("ERR: empty\n"); break;
+	default: printf("ERR: code %d\n", rc); break;
+	}
+}
+
+static void print_fxfer_err(int rc)
+{
+	switch (rc) {
+	case FXFER_OK: break;
+	case FXFER_ERR: printf("ERR: FileXfer internal error\n"); break;
+	case FXFER_BAD_ARG: printf("ERR: bad argument\n"); break;
+	case FXFER_NOT_FOUND: printf("ERR: not found\n"); break;
+	case FXFER_NAME_TOO_LONG: printf("ERR: name exceeds FileFS 14-byte limit\n"); break;
+	case FXFER_EXISTS: printf("ERR: already exists\n"); break;
+	case FXFER_IO: printf("ERR: host I/O failure\n"); break;
 	default: printf("ERR: code %d\n", rc); break;
 	}
 }
@@ -58,6 +73,11 @@ void usage(void)
 	printf("\tbegin\n");
 	printf("\tcommit\n");
 	printf("\trollback\n");
+	printf("  Host <-> FileFS binary transfer:\n");
+	printf("\timport <host_path> <ffs_path>\n");
+	printf("\texport <ffs_path> <host_path>\n");
+	printf("\timporttree <host_dir> <ffs_dir>\n");
+	printf("\texporttree <ffs_dir> <host_dir>\n");
 	printf("  FileGit (repo metadata in /.git, OID=12 hex):\n");
 	printf("\tgit init\n");
 	printf("\tgit add <path>\n");
@@ -69,6 +89,73 @@ void usage(void)
 	printf("\tgit checkout <branch|oid>\n");
 	printf("\tgit show <branch|oid>\n");
 	printf("\tgit cat-file <oid>\n");
+}
+
+/* Parse "cmd a b" into a and b. Returns 1 on success. */
+static int split_two_args(char *rest, char **a, char **b)
+{
+	char *p;
+	if (!rest || !*rest) return 0;
+	while (*rest == ' ') rest++;
+	if (!*rest) return 0;
+	*a = rest;
+	p = rest;
+	while (*p && *p != ' ') p++;
+	if (!*p) return 0;
+	*p = 0;
+	p++;
+	while (*p == ' ') p++;
+	if (!*p) return 0;
+	*b = p;
+	return 1;
+}
+
+static int handle_xfer(FileFS *ffs, char *cmd)
+{
+	char *a, *b;
+	int rc;
+
+	if (strncmp(cmd, "importtree", 10) == 0 && (cmd[10] == ' ' || cmd[10] == 0)) {
+		if (!FileFS_ismount(ffs)) { printf("ERR: not mount data file.\n"); return 1; }
+		if (!split_two_args(cmd + 10, &a, &b)) {
+			printf("usage: importtree <host_dir> <ffs_dir>\n");
+			return 1;
+		}
+		rc = FileXfer_import_tree(ffs, a, b, 1);
+		if (rc != FXFER_OK) print_fxfer_err(rc);
+		return 1;
+	}
+	if (strncmp(cmd, "exporttree", 10) == 0 && (cmd[10] == ' ' || cmd[10] == 0)) {
+		if (!FileFS_ismount(ffs)) { printf("ERR: not mount data file.\n"); return 1; }
+		if (!split_two_args(cmd + 10, &a, &b)) {
+			printf("usage: exporttree <ffs_dir> <host_dir>\n");
+			return 1;
+		}
+		rc = FileXfer_export_tree(ffs, a, b);
+		if (rc != FXFER_OK) print_fxfer_err(rc);
+		return 1;
+	}
+	if (strncmp(cmd, "import", 6) == 0 && (cmd[6] == ' ' || cmd[6] == 0)) {
+		if (!FileFS_ismount(ffs)) { printf("ERR: not mount data file.\n"); return 1; }
+		if (!split_two_args(cmd + 6, &a, &b)) {
+			printf("usage: import <host_path> <ffs_path>\n");
+			return 1;
+		}
+		rc = FileXfer_import_file(ffs, a, b);
+		if (rc != FXFER_OK) print_fxfer_err(rc);
+		return 1;
+	}
+	if (strncmp(cmd, "export", 6) == 0 && (cmd[6] == ' ' || cmd[6] == 0)) {
+		if (!FileFS_ismount(ffs)) { printf("ERR: not mount data file.\n"); return 1; }
+		if (!split_two_args(cmd + 6, &a, &b)) {
+			printf("usage: export <ffs_path> <host_path>\n");
+			return 1;
+		}
+		rc = FileXfer_export_file(ffs, a, b);
+		if (rc != FXFER_OK) print_fxfer_err(rc);
+		return 1;
+	}
+	return 0;
 }
 
 /* Handle "git ..." shell commands. Returns 1 if consumed, 0 if not a git cmd. */
@@ -685,6 +772,8 @@ int main(int argc, char *argv[])
 			} else {
 				FileFS_rollback(ffs);
 			}
+			continue;
+		} else if (handle_xfer(ffs, cmd)) {
 			continue;
 		} else if (handle_git(ffs, cmd)) {
 			continue;
