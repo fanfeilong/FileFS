@@ -33,6 +33,14 @@ make
 ./demo
 ```
 
+Includes **FileGit**: git-like commands (`git init/add/commit/log/...`) whose
+repository metadata lives inside the FileFS volume at `/.git` (12-hex OIDs to
+fit the 14-byte name limit). See [c/README.md](c/README.md).
+
+```bash
+cd c && make test-git
+```
+
 See [c/README.md](c/README.md).
 
 ## C++
