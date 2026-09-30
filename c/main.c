@@ -14,6 +14,23 @@
 #include <string.h>
 
 #include "FileFS.h"
+#include "FileGit.h"
+
+static void print_fgit_err(int rc)
+{
+	switch (rc) {
+	case FGIT_OK: break;
+	case FGIT_ERR: printf("ERR: FileGit internal error\n"); break;
+	case FGIT_NOT_REPO: printf("ERR: not a FileGit repository (run: git init)\n"); break;
+	case FGIT_EXISTS: printf("ERR: already exists\n"); break;
+	case FGIT_NOT_FOUND: printf("ERR: not found\n"); break;
+	case FGIT_BAD_ARG: printf("ERR: bad argument\n"); break;
+	case FGIT_NAME_TOO_LONG: printf("ERR: name exceeds FileFS 14-byte limit\n"); break;
+	case FGIT_CONFLICT: printf("ERR: conflict\n"); break;
+	case FGIT_EMPTY: printf("ERR: empty\n"); break;
+	default: printf("ERR: code %d\n", rc); break;
+	}
+}
 
 void usage(void)
 {
@@ -41,6 +58,110 @@ void usage(void)
 	printf("\tbegin\n");
 	printf("\tcommit\n");
 	printf("\trollback\n");
+	printf("  FileGit (repo metadata in /.git, OID=12 hex):\n");
+	printf("\tgit init\n");
+	printf("\tgit add <path>\n");
+	printf("\tgit rm <path>\n");
+	printf("\tgit status\n");
+	printf("\tgit commit <message>\n");
+	printf("\tgit log\n");
+	printf("\tgit branch [name]\n");
+	printf("\tgit checkout <branch|oid>\n");
+	printf("\tgit show <branch|oid>\n");
+	printf("\tgit cat-file <oid>\n");
+}
+
+/* Handle "git ..." shell commands. Returns 1 if consumed, 0 if not a git cmd. */
+static int handle_git(FileFS *ffs, char *cmd)
+{
+	char *sub, *arg;
+	int rc;
+
+	if (strncmp(cmd, "git", 3) != 0) return 0;
+	if (cmd[3] != 0 && cmd[3] != ' ') return 0;
+
+	if (!FileFS_ismount(ffs)) {
+		printf("ERR: not mount data file.\n");
+		return 1;
+	}
+
+	sub = cmd + 3;
+	while (*sub == ' ') sub++;
+	if (*sub == 0) {
+		printf("ERR: git requires a subcommand\n");
+		return 1;
+	}
+
+	arg = sub;
+	while (*arg && *arg != ' ') arg++;
+	if (*arg == ' ') {
+		*arg = 0;
+		arg++;
+		while (*arg == ' ') arg++;
+	} else {
+		arg = NULL;
+	}
+
+	if (strcmp(sub, "init") == 0) {
+		rc = FileGit_init(ffs);
+		if (rc != FGIT_OK) print_fgit_err(rc);
+		return 1;
+	}
+	if (strcmp(sub, "add") == 0) {
+		if (!arg || !*arg) { printf("usage: git add <path>\n"); return 1; }
+		rc = FileGit_add(ffs, arg);
+		if (rc != FGIT_OK) print_fgit_err(rc);
+		return 1;
+	}
+	if (strcmp(sub, "rm") == 0) {
+		if (!arg || !*arg) { printf("usage: git rm <path>\n"); return 1; }
+		rc = FileGit_rm(ffs, arg);
+		if (rc != FGIT_OK) print_fgit_err(rc);
+		return 1;
+	}
+	if (strcmp(sub, "status") == 0) {
+		rc = FileGit_status(ffs);
+		if (rc != FGIT_OK) print_fgit_err(rc);
+		return 1;
+	}
+	if (strcmp(sub, "commit") == 0) {
+		if (!arg || !*arg) { printf("usage: git commit <message>\n"); return 1; }
+		rc = FileGit_commit(ffs, arg);
+		if (rc != FGIT_OK && rc != FGIT_EMPTY) print_fgit_err(rc);
+		return 1;
+	}
+	if (strcmp(sub, "log") == 0) {
+		rc = FileGit_log(ffs, 20);
+		if (rc != FGIT_OK) print_fgit_err(rc);
+		return 1;
+	}
+	if (strcmp(sub, "branch") == 0) {
+		rc = FileGit_branch(ffs, (arg && *arg) ? arg : NULL);
+		if (rc != FGIT_OK) print_fgit_err(rc);
+		return 1;
+	}
+	if (strcmp(sub, "checkout") == 0) {
+		if (!arg || !*arg) { printf("usage: git checkout <branch|oid>\n"); return 1; }
+		rc = FileGit_checkout(ffs, arg);
+		if (rc != FGIT_OK) print_fgit_err(rc);
+		return 1;
+	}
+	if (strcmp(sub, "show") == 0) {
+		if (!arg || !*arg) { printf("usage: git show <branch|oid>\n"); return 1; }
+		rc = FileGit_show(ffs, arg);
+		if (rc != FGIT_OK) print_fgit_err(rc);
+		return 1;
+	}
+	if (strcmp(sub, "cat-file") == 0) {
+		if (!arg || !*arg) { printf("usage: git cat-file <oid>\n"); return 1; }
+		rc = FileGit_cat_file(ffs, arg);
+		if (rc != FGIT_OK) print_fgit_err(rc);
+		return 1;
+	}
+
+	printf("Unknown git subcommand: %s\n", sub);
+	printf("  git init|add|rm|status|commit|log|branch|checkout|show|cat-file\n");
+	return 1;
 }
 
 static void fun_ls(FileFS *ffs, char *path)
@@ -564,6 +685,8 @@ int main(int argc, char *argv[])
 			} else {
 				FileFS_rollback(ffs);
 			}
+			continue;
+		} else if (handle_git(ffs, cmd)) {
 			continue;
 		}
 		printf("  Unknown/Incorrect command: %s\n", cmd);
