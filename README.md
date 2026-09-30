@@ -33,12 +33,11 @@ make
 ./demo
 ```
 
-Includes **FileGit**: git-like commands (`git init/add/commit/log/...`) whose
-repository metadata lives inside the FileFS volume at `/.git` (12-hex OIDs to
-fit the 14-byte name limit). See [c/README.md](c/README.md).
+Includes **FileGit** (git-like VCS at `/.git`) and **FileXfer** (host ↔ FileFS
+binary `import`/`export`, including directory trees). See [c/README.md](c/README.md).
 
 ```bash
-cd c && make test-git
+cd c && make test
 ```
 
 See [c/README.md](c/README.md).
